@@ -1,0 +1,2 @@
+dhclient
+/etc/init.d/bind start

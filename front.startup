@@ -1,0 +1,10 @@
+ifconfig eth0 10.0.0.1/8
+ifconfig eth1 192.167.17.130/26
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A FORWARD -m state --state NEW -d 192.167.17.131 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -m state --state NEW -d 192.167.17.132 -p tcp --dport 22 -j ACCEPT
+iptables -A FORWARD -m state --state NEW -d 192.167.17.129 -p tcp --dport 22 -j ACCEPT
+iptables -A FORWARD -m state --state NEW -d 192.167.17.133 -p tcp --dport 53 -j ACCEPT
+iptables -A FORWARD -m state --state NEW -i eth1 -j ACCEPT
+/etc/init.d/quagga start
+

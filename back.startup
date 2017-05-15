@@ -1,0 +1,14 @@
+ifconfig eth0 192.168.110.1/24
+ifconfig eth1 192.167.17.129/26
+route add default gw 192.167.17.130
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -t nat -A POSTROUTING -o eth1 -j SNAT --to 192.167.17.129
+iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 22 -j DNAT --to 192.168.110.2:22
+iptables -A FORWARD -m state --state NEW -d 192.168.110.2 -p tcp --dport 22 -j ACCEPT
+iptables -A FORWARD -m state --state NEW -i eth0 -j ACCEPT
+/etc/init.d/dhcp3-server start
+
+
